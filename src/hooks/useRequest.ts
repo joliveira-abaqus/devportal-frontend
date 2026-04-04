@@ -23,8 +23,9 @@ export function useRequest(id: string): UseRequestReturn {
     setError(null);
 
     try {
-      const response = await apiClient.get<Request>(`/requests/${id}`);
-      setRequest(response.data);
+      const response = await apiClient.get(`/requests/${id}`);
+      const body = response.data;
+      setRequest(body.data ?? body);
     } catch (err) {
       setError('Erro ao carregar solicitação');
       console.error('Erro ao buscar request:', err);

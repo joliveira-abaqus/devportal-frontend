@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
@@ -18,8 +18,11 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const rawCallbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+  const callbackUrl = rawCallbackUrl.startsWith('/') && !rawCallbackUrl.startsWith('//') ? rawCallbackUrl : '/dashboard';
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,6 +39,21 @@ export default function LoginPage() {
     setError(null);
 
     try {
+      // Chama a API diretamente para definir o cookie "token" no navegador
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const apiRes = await fetch(`${apiUrl}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email: data.email, password: data.password }),
+      });
+
+      if (!apiRes.ok) {
+        setError('Email ou senha inválidos');
+        return;
+      }
+
+      // Cria a sessão NextAuth para o middleware funcionar
       const result = await signIn('credentials', {
         email: data.email,
         password: data.password,
@@ -43,9 +61,9 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setError('Email ou senha inválidos');
+        setError('Erro ao criar sessão. Tente novamente.');
       } else {
-        router.push('/dashboard');
+        router.push(callbackUrl);
         router.refresh();
       }
     } catch {
@@ -56,6 +74,51 @@ export default function LoginPage() {
   };
 
   return (
+    <div className="rounded-lg bg-white p-8 shadow-sm">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        {error && (
+          <div className="rounded-md bg-red-50 p-3">
+            <p className="text-sm text-red-700">{error}</p>
+          </div>
+        )}
+
+        <Input
+          id="email"
+          type="email"
+          label="Email"
+          placeholder="seu@email.com"
+          autoComplete="email"
+          error={errors.email?.message}
+          {...register('email')}
+        />
+
+        <Input
+          id="password"
+          type="password"
+          label="Senha"
+          placeholder="••••••••"
+          autoComplete="current-password"
+          error={errors.password?.message}
+          {...register('password')}
+        />
+
+        <Button type="submit" className="w-full" isLoading={isLoading}>
+          Entrar
+        </Button>
+      </form>
+
+      <p className="mt-6 text-center text-sm text-gray-600">
+        Não tem conta?{' '}
+        <Link href="/register" className="font-medium text-brand-600 hover:text-brand-500">
+          Registre-se
+        </Link>
+      </p>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
@@ -64,46 +127,9 @@ export default function LoginPage() {
           <p className="mt-2 text-sm text-gray-600">Faça login para acessar o portal</p>
         </div>
 
-        <div className="rounded-lg bg-white p-8 shadow-sm">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            {error && (
-              <div className="rounded-md bg-red-50 p-3">
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
-            )}
-
-            <Input
-              id="email"
-              type="email"
-              label="Email"
-              placeholder="seu@email.com"
-              autoComplete="email"
-              error={errors.email?.message}
-              {...register('email')}
-            />
-
-            <Input
-              id="password"
-              type="password"
-              label="Senha"
-              placeholder="••••••••"
-              autoComplete="current-password"
-              error={errors.password?.message}
-              {...register('password')}
-            />
-
-            <Button type="submit" className="w-full" isLoading={isLoading}>
-              Entrar
-            </Button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-gray-600">
-            Não tem conta?{' '}
-            <Link href="/register" className="font-medium text-brand-600 hover:text-brand-500">
-              Registre-se
-            </Link>
-          </p>
-        </div>
+        <Suspense fallback={<div className="rounded-lg bg-white p-8 shadow-sm" />}>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );
