@@ -30,8 +30,9 @@ export function useRequests(options: UseRequestsOptions = {}): UseRequestsReturn
       if (options.status) params.append('status', options.status);
       if (options.type) params.append('type', options.type);
 
-      const response = await apiClient.get<Request[]>(`/requests?${params.toString()}`);
-      setRequests(response.data);
+      const response = await apiClient.get(`/requests?${params.toString()}`);
+      const body = response.data;
+      setRequests(Array.isArray(body) ? body : body.data ?? []);
     } catch (err) {
       setError('Erro ao carregar solicitações');
       console.error('Erro ao buscar requests:', err);
