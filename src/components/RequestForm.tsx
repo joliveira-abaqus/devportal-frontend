@@ -7,7 +7,6 @@ import { z } from 'zod';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
-import FileUpload from '@/components/FileUpload';
 import apiClient from '@/lib/api-client';
 import { useState } from 'react';
 
@@ -21,7 +20,6 @@ type RequestFormData = z.infer<typeof requestSchema>;
 
 export default function RequestForm() {
   const router = useRouter();
-  const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -99,8 +97,6 @@ export default function RequestForm() {
         error={errors.type?.message}
         {...register('type')}
       />
-
-      <FileUpload onFileSelect={setFile} selectedFile={file} />
 
       <div className="flex justify-end gap-3">
         <Button type="button" variant="outline" onClick={() => router.back()}>
