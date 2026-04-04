@@ -1,0 +1,32 @@
+{
+  "project": "devportal-frontend",
+  "description": "Frontend Next.js do DevPortal - portal de solicitações de desenvolvimento",
+  "stack": {
+    "framework": "Next.js 14 (App Router)",
+    "language": "TypeScript",
+    "styling": "Tailwind CSS",
+    "auth": "NextAuth.js",
+    "http": "Axios",
+    "forms": "react-hook-form + zod",
+    "e2e": "Playwright"
+  },
+  "ports": {
+    "frontend": 3000,
+    "backend": 3001
+  },
+  "related_repos": [
+    "joliveira-abaqus/devportal-api",
+    "joliveira-abaqus/devportal-infra"
+  ],
+  "test_credentials": {
+    "email": "dev@devportal.local",
+    "password": "DevPortal123!"
+  },
+  "key_files": {
+    "auth_config": "src/lib/auth.ts",
+    "api_client": "src/lib/api-client.ts",
+    "middleware": "src/middleware.ts",
+    "types": "src/types/index.ts",
+    "ci": ".github/workflows/ci.yml"
+  }
+}
