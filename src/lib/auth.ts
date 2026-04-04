@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           const body = await res.json();
-          const user = body.data || body;
+          const user = body.data ?? body;
 
           return {
             id: user.id,

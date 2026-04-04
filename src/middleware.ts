@@ -8,8 +8,6 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  console.log('[middleware] path:', request.nextUrl.pathname, 'token:', !!token);
-
   if (!token) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname + request.nextUrl.search);

@@ -45,7 +45,7 @@ export default function RequestForm() {
         type: data.type,
       });
 
-      const created = response.data.data || response.data;
+      const created = response.data.data ?? response.data;
       router.push(`/requests/${created.id}`);
     } catch {
       setSubmitError('Erro ao criar solicitação. Tente novamente.');
