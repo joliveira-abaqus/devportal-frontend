@@ -36,6 +36,21 @@ export default function LoginPage() {
     setError(null);
 
     try {
+      // Chama a API diretamente para definir o cookie "token" no navegador
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const apiRes = await fetch(`${apiUrl}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email: data.email, password: data.password }),
+      });
+
+      if (!apiRes.ok) {
+        setError('Email ou senha inválidos');
+        return;
+      }
+
+      // Cria a sessão NextAuth para o middleware funcionar
       const result = await signIn('credentials', {
         email: data.email,
         password: data.password,

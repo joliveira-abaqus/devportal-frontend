@@ -41,19 +41,14 @@ export default function RequestForm() {
     setSubmitError(null);
 
     try {
-      const formData = new FormData();
-      formData.append('title', data.title);
-      formData.append('description', data.description);
-      formData.append('type', data.type);
-      if (file) {
-        formData.append('file', file);
-      }
-
-      const response = await apiClient.post('/requests', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response = await apiClient.post('/requests', {
+        title: data.title,
+        description: data.description,
+        type: data.type,
       });
 
-      router.push(`/requests/${response.data.id}`);
+      const created = response.data.data || response.data;
+      router.push(`/requests/${created.id}`);
     } catch {
       setSubmitError('Erro ao criar solicitação. Tente novamente.');
     } finally {
