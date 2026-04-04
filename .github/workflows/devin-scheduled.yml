@@ -1,0 +1,25 @@
+name: Devin - Auditoria Semanal de Dependências
+
+on:
+  schedule:
+    - cron: '0 9 * * 1' # Toda segunda-feira às 9h UTC
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Auditoria de segurança
+        run: npm audit --omit=dev || true
+
+      - name: Verificar pacotes desatualizados
+        run: npm outdated || true
