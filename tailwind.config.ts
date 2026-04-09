@@ -23,10 +23,10 @@ const config: Config = {
           900: '#1e3a8a',
           950: '#172554',
         },
-        'mint-green': {
-          50: '#F0FFF4',
-          100: '#DCFCE7',
-          DEFAULT: '#F0FFF4',
+        ivory: {
+          50: '#FEFDF5',
+          100: '#FEFCE8',
+          DEFAULT: '#FFFFF0',
         },
       },
     },
