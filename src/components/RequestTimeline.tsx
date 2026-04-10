@@ -21,16 +21,16 @@ const eventIcons: Record<string, React.ElementType> = {
 };
 
 const eventColors: Record<string, string> = {
-  status_change: 'bg-blue-100 text-blue-600',
-  comment: 'bg-gray-100 text-gray-600',
-  pr_linked: 'bg-purple-100 text-purple-600',
-  file_attached: 'bg-green-100 text-green-600',
+  status_change: 'bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400',
+  comment: 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400',
+  pr_linked: 'bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-400',
+  file_attached: 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-400',
 };
 
 export default function RequestTimeline({ events }: RequestTimelineProps) {
   if (!events || events.length === 0) {
     return (
-      <div className="flex items-center gap-2 py-8 text-sm text-gray-500">
+      <div className="flex items-center gap-2 py-8 text-sm text-gray-500 dark:text-gray-400">
         <Clock className="h-4 w-4" />
         <span>Nenhum evento registrado ainda.</span>
       </div>
@@ -50,7 +50,7 @@ export default function RequestTimeline({ events }: RequestTimelineProps) {
               <div className="relative pb-8">
                 {!isLast && (
                   <span
-                    className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
+                    className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200 dark:bg-gray-700"
                     aria-hidden="true"
                   />
                 )}
@@ -64,7 +64,7 @@ export default function RequestTimeline({ events }: RequestTimelineProps) {
                   </div>
                   <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                     <div>
-                      <p className="text-sm text-gray-700">{event.description}</p>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{event.description}</p>
                       {event.metadata?.prUrl && (
                         <a
                           href={event.metadata.prUrl}
@@ -77,7 +77,7 @@ export default function RequestTimeline({ events }: RequestTimelineProps) {
                         </a>
                       )}
                     </div>
-                    <div className="whitespace-nowrap text-right text-xs text-gray-500">
+                    <div className="whitespace-nowrap text-right text-xs text-gray-500 dark:text-gray-400">
                       {formatDate(event.createdAt)}
                     </div>
                   </div>

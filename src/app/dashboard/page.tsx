@@ -22,8 +22,8 @@ export default function DashboardPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Minhas Solicitações</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Minhas Solicitações</h1>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Gerencie suas solicitações de desenvolvimento
           </p>
         </div>
@@ -35,7 +35,7 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      <div className="mb-6 flex flex-wrap items-center gap-4 rounded-lg bg-white p-4 shadow-sm">
+      <div className="mb-6 flex flex-wrap items-center gap-4 rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
         <Search className="h-4 w-4 text-gray-400" />
         <Select
           id="status-filter"
@@ -68,16 +68,16 @@ export default function DashboardPage() {
       {isLoading ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-24 animate-pulse rounded-lg bg-white shadow-sm" />
+            <div key={i} className="h-24 animate-pulse rounded-lg bg-white shadow-sm dark:bg-gray-800" />
           ))}
         </div>
       ) : error ? (
-        <div className="rounded-lg bg-red-50 p-6 text-center">
-          <p className="text-red-700">{error}</p>
+        <div className="rounded-lg bg-red-50 p-6 text-center dark:bg-red-900/30">
+          <p className="text-red-700 dark:text-red-400">{error}</p>
         </div>
       ) : requests.length === 0 ? (
-        <div className="rounded-lg bg-white p-12 text-center shadow-sm">
-          <p className="text-gray-500">Nenhuma solicitação encontrada.</p>
+        <div className="rounded-lg bg-white p-12 text-center shadow-sm dark:bg-gray-800">
+          <p className="text-gray-500 dark:text-gray-400">Nenhuma solicitação encontrada.</p>
           <Link href="/requests/new" className="mt-4 inline-block">
             <Button variant="outline">
               <PlusCircle className="mr-2 h-4 w-4" />

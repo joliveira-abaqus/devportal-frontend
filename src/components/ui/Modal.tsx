@@ -41,12 +41,12 @@ export default function Modal({ isOpen, onClose, title, children, className }: M
         if (e.target === overlayRef.current) onClose();
       }}
     >
-      <div className={cn('w-full max-w-lg rounded-lg bg-white p-6 shadow-xl', className)}>
+      <div className={cn('w-full max-w-lg rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800', className)}>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h2>
           <button
             onClick={onClose}
-            className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+            className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-300"
           >
             <X className="h-5 w-5" />
           </button>
