@@ -18,14 +18,14 @@ export default function RequestCard({ request }: RequestCardProps) {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-gray-900">{request.title}</h3>
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{request.title}</h3>
               <StatusBadge status={request.status} />
             </div>
 
-            <p className="mt-1 line-clamp-2 text-sm text-gray-500">{request.description}</p>
+            <p className="mt-1 line-clamp-2 text-sm text-gray-500 dark:text-gray-400">{request.description}</p>
 
-            <div className="mt-3 flex items-center gap-4 text-xs text-gray-400">
-              <span className="inline-flex items-center gap-1 rounded bg-gray-100 px-2 py-0.5 font-medium text-gray-600">
+            <div className="mt-3 flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500">
+              <span className="inline-flex items-center gap-1 rounded bg-gray-100 px-2 py-0.5 font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300">
                 {requestTypeLabels[request.type]}
               </span>
               <span className="inline-flex items-center gap-1">
@@ -35,7 +35,7 @@ export default function RequestCard({ request }: RequestCardProps) {
             </div>
           </div>
 
-          <ArrowRight className="ml-4 h-5 w-5 flex-shrink-0 text-gray-400" />
+          <ArrowRight className="ml-4 h-5 w-5 flex-shrink-0 text-gray-400 dark:text-gray-500" />
         </div>
       </Card>
     </Link>

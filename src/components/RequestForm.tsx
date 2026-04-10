@@ -57,8 +57,8 @@ export default function RequestForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {submitError && (
-        <div className="rounded-md bg-red-50 p-4">
-          <p className="text-sm text-red-700">{submitError}</p>
+        <div className="rounded-md bg-red-50 p-4 dark:bg-red-900/30">
+          <p className="text-sm text-red-700 dark:text-red-400">{submitError}</p>
         </div>
       )}
 
@@ -71,18 +71,18 @@ export default function RequestForm() {
       />
 
       <div className="w-full">
-        <label htmlFor="description" className="mb-1 block text-sm font-medium text-gray-700">
+        <label htmlFor="description" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
           Descrição
         </label>
         <textarea
           id="description"
           rows={5}
           placeholder="Descreva em detalhes o que precisa ser feito"
-          className="block w-full rounded-md border-gray-300 shadow-sm transition-colors focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
+          className="block w-full rounded-md border-gray-300 shadow-sm transition-colors focus:border-brand-500 focus:ring-brand-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400"
           {...register('description')}
         />
         {errors.description?.message && (
-          <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+          <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.description.message}</p>
         )}
       </div>
 
