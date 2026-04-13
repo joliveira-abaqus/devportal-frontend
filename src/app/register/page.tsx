@@ -5,25 +5,11 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { FileText } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import apiClient from '@/lib/api-client';
-
-const registerSchema = z
-  .object({
-    name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
-    email: z.string().email('Email inválido'),
-    password: z.string().min(8, 'Senha deve ter pelo menos 8 caracteres'),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Senhas não coincidem',
-    path: ['confirmPassword'],
-  });
-
-type RegisterFormData = z.infer<typeof registerSchema>;
+import { registerSchema, type RegisterFormData } from '@/lib/schemas';
 
 export default function RegisterPage() {
   const router = useRouter();
