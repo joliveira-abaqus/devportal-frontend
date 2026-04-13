@@ -3,20 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
 import apiClient from '@/lib/api-client';
+import { requestSchema, type RequestFormData } from '@/lib/schemas';
 import { useState } from 'react';
-
-const requestSchema = z.object({
-  title: z.string().min(3, 'Título deve ter pelo menos 3 caracteres'),
-  description: z.string().min(10, 'Descrição deve ter pelo menos 10 caracteres'),
-  type: z.enum(['bug_fix', 'feature', 'migration']),
-});
-
-type RequestFormData = z.infer<typeof requestSchema>;
 
 export default function RequestForm() {
   const router = useRouter();
