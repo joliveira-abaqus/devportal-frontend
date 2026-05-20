@@ -45,7 +45,7 @@ describe('apiClient', () => {
     );
   });
 
-  it('deve redirecionar para /login em erro 401', () => {
+  it('deve redirecionar para /login em erro 401', async () => {
     require('@/lib/api-client');
 
     const errorHandler = mockResponseUse.mock.calls[0][1];
@@ -54,6 +54,6 @@ describe('apiClient', () => {
     delete (window as { location?: unknown }).location;
     (window as { location: { href: string } }).location = { href: '' };
 
-    expect(() => errorHandler(mockError)).rejects.toBeDefined();
+    await expect(errorHandler(mockError)).rejects.toBeDefined();
   });
 });
