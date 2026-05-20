@@ -59,4 +59,63 @@ test.describe('Autenticação', () => {
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/login/);
   });
+
+  test('deve registrar nova conta com sucesso', async ({ page }) => {
+    const uniqueEmail = `test-${Date.now()}@devportal.local`;
+
+    await page.goto('/register');
+
+    await page.getByLabel('Nome').fill('Usuário de Teste');
+    await page.getByLabel('Email').fill(uniqueEmail);
+    await page.getByLabel('Senha', { exact: true }).fill('SenhaForte123!');
+    await page.getByLabel('Confirmar Senha').fill('SenhaForte123!');
+
+    await page.getByRole('button', { name: 'Criar Conta' }).click();
+
+    // Deve redirecionar para login após registro
+    await expect(page).toHaveURL(/\/login/);
+  });
+
+  test('deve exibir erros de validação no registro', async ({ page }) => {
+    await page.goto('/register');
+
+    // Tenta submeter sem preencher campos
+    await page.getByRole('button', { name: 'Criar Conta' }).click();
+
+    // Verifica validações
+    await expect(page.getByText('Nome deve ter pelo menos 2 caracteres')).toBeVisible();
+    await expect(page.getByText('Email inválido')).toBeVisible();
+    await expect(page.getByText('Senha deve ter pelo menos 8 caracteres')).toBeVisible();
+  });
+
+  test('deve exibir erro quando senhas não coincidem no registro', async ({ page }) => {
+    await page.goto('/register');
+
+    await page.getByLabel('Nome').fill('Teste');
+    await page.getByLabel('Email').fill('test@test.com');
+    await page.getByLabel('Senha', { exact: true }).fill('SenhaForte123!');
+    await page.getByLabel('Confirmar Senha').fill('SenhaDiferente456!');
+
+    await page.getByRole('button', { name: 'Criar Conta' }).click();
+
+    await expect(page.getByText('Senhas não coincidem')).toBeVisible();
+  });
+
+  test('deve redirecionar para dashboard após login via callbackUrl', async ({ page }) => {
+    // Acessa /dashboard sem autenticação — middleware redireciona para /login com callbackUrl
+    await page.goto('/dashboard');
+    await expect(page).toHaveURL(/\/login/);
+
+    // Verifica que a URL contém callbackUrl
+    const url = page.url();
+    expect(url).toContain('callbackUrl');
+
+    // Faz login
+    await page.getByLabel('Email').fill(TEST_EMAIL);
+    await page.getByLabel('Senha').fill(TEST_PASSWORD);
+    await page.getByRole('button', { name: 'Entrar' }).click();
+
+    // Deve redirecionar de volta ao dashboard
+    await expect(page).toHaveURL(/\/dashboard/);
+  });
 });
