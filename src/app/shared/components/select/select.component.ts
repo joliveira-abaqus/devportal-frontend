@@ -1,0 +1,76 @@
+import { Component, Input, forwardRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+export interface SelectOption {
+  value: string;
+  label: string;
+}
+
+@Component({
+  selector: 'app-select',
+  standalone: true,
+  imports: [CommonModule],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectComponent),
+      multi: true,
+    },
+  ],
+  template: `
+    <div class="w-full">
+      <label
+        *ngIf="label"
+        [attr.for]="selectId"
+        class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
+        {{ label }}
+      </label>
+      <select
+        [id]="selectId"
+        [value]="value"
+        (change)="onSelectChange($event)"
+        (blur)="onTouched()"
+        [ngClass]="{
+          'border-red-300 focus:border-red-500 focus:ring-red-500': error,
+          'border-gray-300 focus:border-brand-500 focus:ring-brand-500': !error
+        }"
+        class="block w-full rounded-md shadow-sm transition-colors sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+      >
+        <option *ngFor="let option of options" [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+      <p *ngIf="error" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ error }}</p>
+    </div>
+  `,
+})
+export class SelectComponent implements ControlValueAccessor {
+  @Input() label = '';
+  @Input() error = '';
+  @Input() selectId = '';
+  @Input() options: SelectOption[] = [];
+
+  value = '';
+  onChange: (value: string) => void = () => {};
+  onTouched: () => void = () => {};
+
+  onSelectChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.value = target.value;
+    this.onChange(this.value);
+  }
+
+  writeValue(value: string): void {
+    this.value = value || '';
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+}
