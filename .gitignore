@@ -10,12 +10,9 @@
 /test-results
 /e2e/results
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
+# Angular build
+/dist/
+/.angular/
 
 # misc
 .DS_Store
@@ -30,9 +27,9 @@ yarn-error.log*
 .env*.local
 .env
 
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+
+# IDE
+.vscode/
+.idea/

@@ -1,57 +1,54 @@
 # AGENTS.md - DevPortal Frontend
 
 ## Visão Geral
-Aplicação frontend do DevPortal construída com Next.js 14 (App Router), TypeScript e Tailwind CSS.
-Comunica-se com o `devportal-api` (porta 3001) via cookies httpOnly para autenticação JWT.
+Aplicação frontend do DevPortal construída com Angular 18 (standalone components), TypeScript e Tailwind CSS.
+Comunica-se com o `devportal-api` (porta 3001) via cookies httpOnly e Bearer token para autenticação JWT.
 
 ## Stack Técnico
-- **Framework:** Next.js 14 (App Router)
+- **Framework:** Angular 18 (standalone components)
 - **Linguagem:** TypeScript
 - **Estilização:** Tailwind CSS + @tailwindcss/forms
-- **Autenticação:** NextAuth.js (CredentialsProvider)
-- **HTTP Client:** Axios (withCredentials)
-- **Formulários:** react-hook-form + zod
-- **Ícones:** lucide-react
-- **Testes E2E:** Playwright
+- **Autenticação:** JWT via localStorage + HttpInterceptor
+- **HTTP Client:** Angular HttpClient
+- **Formulários:** Angular Reactive Forms
+- **Testes:** Jasmine/Karma (unitários)
 
 ## Estrutura do Projeto
 ```
 src/
-├── app/           # Páginas e rotas (App Router)
-├── components/    # Componentes React (ui/ para base)
-├── lib/           # Utilidades e configurações
-├── hooks/         # Custom hooks
-├── types/         # TypeScript types
-└── middleware.ts   # Proteção de rotas
+├── app/
+│   ├── core/           # Guards, interceptors, services, models
+│   ├── shared/         # Componentes reutilizáveis (ui)
+│   └── features/       # Módulos de funcionalidade
+│       ├── auth/       # Login e registro
+│       ├── dashboard/  # Dashboard principal
+│       └── requests/   # CRUD de solicitações
+├── environments/       # Configurações de ambiente
+└── styles.css          # Estilos globais (Tailwind)
 ```
 
 ## Comandos Essenciais
 ```bash
-npm run dev        # Servidor de desenvolvimento (porta 3000)
-npm run build      # Build de produção
-npm run lint       # Verificação de lint
-npm run test:e2e   # Testes E2E com Playwright
+npm start              # Servidor de desenvolvimento (porta 4200)
+npm run build          # Build de produção
+npm run lint           # Verificação de lint
+npm test               # Testes unitários com Karma
 ```
 
 ## Variáveis de Ambiente
-Copie `.env.local.example` para `.env.local` e configure:
-- `NEXT_PUBLIC_API_URL` - URL do backend (padrão: http://localhost:3001)
-- `NEXTAUTH_SECRET` - Secret do NextAuth
-- `NEXTAUTH_URL` - URL da aplicação (padrão: http://localhost:3000)
-- `BACKEND_URL` - URL do backend para chamadas server-side
+Configurar em `src/environments/environment.ts`:
+- `apiUrl` - URL do backend (padrão: http://localhost:3001)
 
 ## Convenções
 - Idioma dos comentários e commits: Português (BR)
 - Branch naming: `feature/<escopo-da-alteracao>` (kebab-case)
-- Componentes em PascalCase, hooks com prefixo `use`
-- Validação de formulários sempre com Zod
+- Componentes standalone com PascalCase
+- Validação de formulários com Angular Reactive Forms
 
 ## Testes
-- Testes E2E em `e2e/` usando Playwright
+- Testes unitários com Jasmine/Karma
 - Credenciais de teste: `dev@devportal.local` / `DevPortal123!`
-- Gravar vídeo e screenshots em todos os testes para evidência
 
 ## CI/CD
 - GitHub Actions: lint + test + build em cada PR
-- E2E roda após o build com serviços PostgreSQL e Redis
-- Artefatos Playwright salvos por 7 dias
+- Deploy via Docker (nginx) para produção
