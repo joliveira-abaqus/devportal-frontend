@@ -2,11 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { authGuard } from './auth.guard';
-import { AuthService } from '../services/auth.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 describe('authGuard', () => {
-  let authService: AuthService;
   let router: Router;
 
   beforeEach(() => {
@@ -19,7 +17,6 @@ describe('authGuard', () => {
       ],
     });
 
-    authService = TestBed.inject(AuthService);
     router = TestBed.inject(Router);
   });
 
