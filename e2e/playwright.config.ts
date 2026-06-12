@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['html', { outputFolder: '../playwright-report' }]],
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    baseURL: process.env.BASE_URL || 'http://localhost:4200',
     video: 'on',
     screenshot: 'on',
     trace: 'on-first-retry',
@@ -21,8 +21,8 @@ export default defineConfig({
   ],
   webServer: process.env.CI
     ? {
-        command: 'npm run start',
-        port: 3000,
+        command: 'npx ng serve --port 4200',
+        port: 4200,
         reuseExistingServer: !process.env.CI,
       }
     : undefined,
