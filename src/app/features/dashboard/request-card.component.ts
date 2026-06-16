@@ -1,0 +1,62 @@
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { LucideAngularModule, Calendar, ArrowRight } from 'lucide-angular';
+import { CardComponent } from '../../shared/components/card.component';
+import { StatusBadgeComponent } from '../../shared/components/status-badge.component';
+import { Request } from '../../core/models';
+import { formatRelativeDate, requestTypeLabels } from '../../core/utils';
+
+@Component({
+  selector: 'app-request-card',
+  standalone: true,
+  imports: [CommonModule, RouterModule, LucideAngularModule, CardComponent, StatusBadgeComponent],
+  template: `
+    <a [routerLink]="['/requests', request.id]">
+      <app-card extraClass="transition-shadow hover:shadow-md cursor-pointer">
+        <div class="flex items-start justify-between">
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                {{ request.title }}
+              </h3>
+              <app-status-badge [status]="request.status" />
+            </div>
+
+            <p class="mt-1 line-clamp-2 text-sm text-gray-500 dark:text-gray-400">
+              {{ request.description }}
+            </p>
+
+            <div class="mt-3 flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500">
+              <span
+                class="inline-flex items-center gap-1 rounded bg-gray-100 px-2 py-0.5 font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+              >
+                {{ typeLabels[request.type] }}
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <lucide-icon [img]="calendarIcon" class="h-3 w-3" />
+                {{ getRelativeDate(request.createdAt) }}
+              </span>
+            </div>
+          </div>
+
+          <lucide-icon
+            [img]="arrowRightIcon"
+            class="ml-4 h-5 w-5 flex-shrink-0 text-gray-400 dark:text-gray-500"
+          />
+        </div>
+      </app-card>
+    </a>
+  `,
+})
+export class RequestCardComponent {
+  @Input({ required: true }) request!: Request;
+
+  readonly calendarIcon = Calendar;
+  readonly arrowRightIcon = ArrowRight;
+  readonly typeLabels = requestTypeLabels;
+
+  getRelativeDate(date: string): string {
+    return formatRelativeDate(date);
+  }
+}

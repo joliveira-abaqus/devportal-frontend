@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-50 text-gray-900 antialiased dark:bg-gray-900 dark:text-gray-100;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+}
+
+/* Estilos de formulário equivalentes ao @tailwindcss/forms */
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='url'],
+input[type='date'],
+input[type='search'],
+textarea,
+select {
+  @apply block w-full rounded-md border-gray-300 shadow-sm transition-colors
+    focus:border-brand-500 focus:ring-brand-500 sm:text-sm
+    dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400;
+  padding: 0.5rem 0.75rem;
+  border-width: 1px;
+  border-style: solid;
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='password']:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--tw-ring-color, #3b82f6);
+}
