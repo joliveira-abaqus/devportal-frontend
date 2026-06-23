@@ -1,6 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 
 export type Theme = 'light' | 'dark';
 
@@ -18,9 +18,9 @@ export class ThemeService {
     const initial = this.getInitialTheme();
     this.themeSubject = new BehaviorSubject<Theme>(initial);
     this.theme$ = this.themeSubject.asObservable();
-    this.isDark$ = new Observable<boolean>((subscriber) => {
-      this.theme$.subscribe((theme) => subscriber.next(theme === 'dark'));
-    });
+    this.isDark$ = this.theme$.pipe(
+      map((theme) => theme === 'dark')
+    );
     this.applyTheme(initial);
   }
 

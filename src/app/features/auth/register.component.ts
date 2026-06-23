@@ -21,6 +21,9 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
     confirmPassword.setErrors({ passwordMismatch: true });
     return { passwordMismatch: true };
   }
+  if (confirmPassword && confirmPassword.hasError('passwordMismatch')) {
+    confirmPassword.setErrors(null);
+  }
   return null;
 }
 
