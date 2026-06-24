@@ -18,11 +18,14 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
   const password = control.get('password');
   const confirmPassword = control.get('confirmPassword');
   if (password && confirmPassword && password.value !== confirmPassword.value) {
-    confirmPassword.setErrors({ passwordMismatch: true });
+    const existingErrors = confirmPassword.errors;
+    confirmPassword.setErrors({ ...existingErrors, passwordMismatch: true });
     return { passwordMismatch: true };
   }
   if (confirmPassword && confirmPassword.hasError('passwordMismatch')) {
-    confirmPassword.setErrors(null);
+    const errors = { ...confirmPassword.errors };
+    delete errors['passwordMismatch'];
+    confirmPassword.setErrors(Object.keys(errors).length ? errors : null);
   }
   return null;
 }
