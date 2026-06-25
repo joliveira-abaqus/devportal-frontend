@@ -13,11 +13,11 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
     setHeaders: req.body instanceof FormData ? {} : { 'Content-Type': 'application/json' },
   });
 
-  const isSessionCheck = req.url === `${environment.apiUrl}/auth/me`;
+  const isAuthEndpoint = req.url.startsWith(`${environment.apiUrl}/auth/`);
 
   return next(cloned).pipe(
     catchError((error) => {
-      if (error.status === 401 && !isSessionCheck) {
+      if (error.status === 401 && !isAuthEndpoint) {
         const currentUrl = router.url;
         router.navigate(['/login'], {
           queryParams: currentUrl && currentUrl !== '/' ? { callbackUrl: currentUrl } : {},

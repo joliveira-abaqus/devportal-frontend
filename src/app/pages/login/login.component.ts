@@ -89,8 +89,12 @@ export class LoginComponent {
     });
 
     const rawCallback = this.route.snapshot.queryParamMap.get('callbackUrl') || '/dashboard';
-    this.callbackUrl =
-      rawCallback.startsWith('/') && !rawCallback.startsWith('//') ? rawCallback : '/dashboard';
+    const isValid =
+      rawCallback.startsWith('/') &&
+      !rawCallback.startsWith('//') &&
+      !rawCallback.startsWith('/\\') &&
+      !rawCallback.startsWith('/login');
+    this.callbackUrl = isValid ? rawCallback : '/dashboard';
   }
 
   getError(field: string): string {
