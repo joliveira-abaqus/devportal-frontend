@@ -21,7 +21,7 @@ export default defineConfig({
   ],
   webServer: process.env.CI
     ? {
-        command: 'npm run start',
+        command: 'npx serve dist/devportal-frontend/browser -l 3000 -s',
         port: 3000,
         reuseExistingServer: !process.env.CI,
       }
