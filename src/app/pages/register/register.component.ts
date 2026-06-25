@@ -113,9 +113,15 @@ export class RegisterComponent {
   private passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password')?.value as string;
     const confirm = control.get('confirmPassword')?.value as string;
+    const confirmControl = control.get('confirmPassword');
     if (password && confirm && password !== confirm) {
-      control.get('confirmPassword')?.setErrors({ mismatch: true });
+      confirmControl?.setErrors({ ...confirmControl.errors, mismatch: true });
       return { mismatch: true };
+    }
+    if (confirmControl?.errors?.['mismatch']) {
+      const errors = { ...confirmControl.errors };
+      delete errors['mismatch'];
+      confirmControl.setErrors(Object.keys(errors).length ? errors : null);
     }
     return null;
   }

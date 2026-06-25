@@ -1,7 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, catchError, of, map } from 'rxjs';
+import { Observable, catchError, of, map, throwError } from 'rxjs';
 import { environment } from '@env/environment';
 import { User } from '@app/types';
 
@@ -39,7 +39,12 @@ export class AuthService {
           this.currentUser.set(user);
           return user;
         }),
-        catchError(() => of(null)),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 401 || error.status === 400) {
+            return of(null);
+          }
+          return throwError(() => error);
+        }),
       );
   }
 
@@ -49,7 +54,12 @@ export class AuthService {
       .post(`${environment.apiUrl}/auth/register`, { name, email, password })
       .pipe(
         map(() => true),
-        catchError(() => of(false)),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 409 || error.status === 400) {
+            return of(false);
+          }
+          return throwError(() => error);
+        }),
       );
   }
 
