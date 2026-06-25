@@ -13,7 +13,6 @@ import { cn } from '@app/lib/utils';
         class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
         role="dialog"
         aria-modal="true"
-        (keydown.escape)="closeModal.emit()"
       >
         <div [class]="modalClasses">
           <div class="mb-4 flex items-center justify-between">
