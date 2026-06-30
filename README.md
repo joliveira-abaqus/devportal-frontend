@@ -68,7 +68,7 @@ npm run dev
 
 A aplicação estará disponível em **http://localhost:3000**.
 
-> Usuário de teste: `dev@devportal.local` / `DevPortal123!`
+> Credenciais de teste disponíveis em `.env.local.example`.
 
 ## Variáveis de Ambiente
 
