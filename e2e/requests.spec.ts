@@ -5,7 +5,6 @@ const TEST_PASSWORD = process.env.TEST_USER_PASSWORD || 'DevPortal123!';
 
 test.describe('Solicitações', () => {
   test.beforeEach(async ({ page }) => {
-    // Login antes de cada teste
     await page.goto('/login');
     await page.getByLabel('Email').fill(TEST_EMAIL);
     await page.getByLabel('Senha').fill(TEST_PASSWORD);
@@ -31,24 +30,21 @@ test.describe('Solicitações', () => {
 
     await page.getByRole('button', { name: 'Criar Solicitação' }).click();
 
-    await expect(
-      page.getByText('Título deve ter pelo menos 3 caracteres'),
-    ).toBeVisible();
-    await expect(
-      page.getByText('Descrição deve ter pelo menos 10 caracteres'),
-    ).toBeVisible();
+    await expect(page.getByText('Título deve ter pelo menos 3 caracteres')).toBeVisible();
+    await expect(page.getByText('Descrição deve ter pelo menos 10 caracteres')).toBeVisible();
   });
 
   test('deve criar uma nova solicitação com sucesso', async ({ page }) => {
     await page.goto('/requests/new');
 
     await page.getByLabel('Título').fill('Corrigir bug no login');
-    await page.getByLabel('Descrição').fill('O botão de login não funciona quando o email contém caracteres especiais');
+    await page
+      .getByLabel('Descrição')
+      .fill('O botão de login não funciona quando o email contém caracteres especiais');
     await page.getByLabel('Tipo').selectOption('bug_fix');
 
     await page.getByRole('button', { name: 'Criar Solicitação' }).click();
 
-    // Deve redirecionar para o detalhe da solicitação
     await expect(page).toHaveURL(/\/requests\/[a-zA-Z0-9-]+/);
     await expect(page.getByText('Corrigir bug no login')).toBeVisible();
   });

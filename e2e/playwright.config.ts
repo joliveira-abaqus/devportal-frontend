@@ -21,7 +21,7 @@ export default defineConfig({
   ],
   webServer: process.env.CI
     ? {
-        command: 'npm run start',
+        command: 'npm run serve:ssr',
         port: 3000,
         reuseExistingServer: !process.env.CI,
       }
