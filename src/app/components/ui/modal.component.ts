@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, X } from 'lucide-angular';
 
@@ -32,7 +32,7 @@ import { LucideAngularModule, X } from 'lucide-angular';
     }
   `,
 })
-export class ModalComponent implements OnInit, OnDestroy {
+export class ModalComponent implements OnChanges, OnDestroy {
   @Input() isOpen = false;
   @Input() title = '';
   @Output() closed = new EventEmitter<void>();
@@ -43,8 +43,16 @@ export class ModalComponent implements OnInit, OnDestroy {
     if (e.key === 'Escape') this.closed.emit();
   };
 
-  ngOnInit(): void {
-    document.addEventListener('keydown', this.handleEscape);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['isOpen']) {
+      if (this.isOpen) {
+        document.addEventListener('keydown', this.handleEscape);
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.removeEventListener('keydown', this.handleEscape);
+        document.body.style.overflow = 'unset';
+      }
+    }
   }
 
   ngOnDestroy(): void {
