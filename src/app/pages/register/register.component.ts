@@ -16,9 +16,17 @@ import { AuthService } from '../../services/auth.service';
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password');
   const confirmPassword = control.get('confirmPassword');
-  if (password && confirmPassword && password.value !== confirmPassword.value) {
-    confirmPassword.setErrors({ passwordMismatch: true });
-    return { passwordMismatch: true };
+  if (password && confirmPassword) {
+    if (password.value !== confirmPassword.value) {
+      if (!confirmPassword.hasError('passwordMismatch')) {
+        confirmPassword.setErrors({ ...confirmPassword.errors, passwordMismatch: true });
+      }
+      return { passwordMismatch: true };
+    } else if (confirmPassword.hasError('passwordMismatch')) {
+      const errors = { ...confirmPassword.errors };
+      delete errors['passwordMismatch'];
+      confirmPassword.setErrors(Object.keys(errors).length ? errors : null);
+    }
   }
   return null;
 }
