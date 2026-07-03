@@ -11,7 +11,7 @@
 
 ### Recomendados
 1. **Componentes reutilizáveis**: Evitar duplicação de código
-2. **Validação com Zod**: Toda entrada de usuário validada
+2. **Reactive Forms**: Toda entrada de usuário validada com Validators
 3. **Tratamento de erros**: Feedback visual em caso de falha
 4. **Loading states**: Skeleton ou spinner durante carregamento
 5. **Responsividade**: Funcionar em mobile e desktop
@@ -20,6 +20,6 @@
 
 - [ ] Mudanças estão dentro do escopo do PR
 - [ ] Nenhum arquivo de configuração sensível foi alterado
-- [ ] Novos componentes seguem padrão existente
+- [ ] Novos componentes seguem padrão existente (standalone)
 - [ ] Imports organizados (sem imports não utilizados)
 - [ ] Textos em português (BR) para interface do usuário

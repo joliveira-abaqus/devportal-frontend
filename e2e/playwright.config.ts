@@ -21,7 +21,7 @@ export default defineConfig({
   ],
   webServer: process.env.CI
     ? {
-        command: 'npm run start',
+        command: 'npx ng serve --port 3000',
         port: 3000,
         reuseExistingServer: !process.env.CI,
       }

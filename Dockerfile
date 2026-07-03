@@ -1,44 +1,31 @@
-FROM node:20-alpine AS base
-
-# Instalar dependências apenas quando necessário
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
 RUN npm ci
 
-# Rebuild do código fonte apenas quando necessário
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-ENV NEXT_TELEMETRY_DISABLED=1
-
 RUN npm run build
 
-# Imagem de produção
-FROM base AS runner
-WORKDIR /app
+FROM nginx:alpine AS runner
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+COPY --from=builder /app/dist/devportal-frontend/browser /usr/share/nginx/html
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Configuração nginx para SPA (redireciona rotas para index.html)
+RUN echo 'server { \
+  listen 80; \
+  server_name _; \
+  root /usr/share/nginx/html; \
+  index index.html; \
+  location / { \
+    try_files $uri $uri/ /index.html; \
+  } \
+  location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ { \
+    expires 1y; \
+    add_header Cache-Control "public, immutable"; \
+  } \
+}' > /etc/nginx/conf.d/default.conf
 
-COPY --from=builder /app/public ./public
+EXPOSE 80
 
-# Configuração do standalone output
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 3000
-
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-CMD ["node", "server.js"]
+CMD ["nginx", "-g", "daemon off;"]
