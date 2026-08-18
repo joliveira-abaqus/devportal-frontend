@@ -21,7 +21,7 @@ export default defineConfig({
   ],
   webServer: process.env.CI
     ? {
-        command: 'npm run dev -- --port 5173 --strictPort',
+        command: 'npm run start -- --port 5173 --strictPort',
         port: 5173,
         reuseExistingServer: !process.env.CI,
       }

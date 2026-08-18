@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { authStorageKey } from '@/contexts/AuthContext';
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001',
@@ -11,7 +12,7 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
-        window.localStorage.removeItem('devportal:user');
+        window.localStorage.removeItem(authStorageKey);
         window.location.href = '/login';
       }
     }
