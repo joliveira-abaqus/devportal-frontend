@@ -36,14 +36,12 @@ test.describe('Autenticação', () => {
   });
 
   test('deve fazer logout', async ({ page }) => {
-    // Login primeiro
     await page.goto('/login');
     await page.getByLabel('Email').fill(TEST_EMAIL);
     await page.getByLabel('Senha').fill(TEST_PASSWORD);
     await page.getByRole('button', { name: 'Entrar' }).click();
     await expect(page).toHaveURL(/\/dashboard/);
 
-    // Logout
     await page.getByRole('button', { name: 'Sair' }).click();
     await expect(page).toHaveURL(/\/login/);
   });

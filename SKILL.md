@@ -10,10 +10,7 @@ cd devportal-frontend
 # 2. Instalar dependências
 npm install
 
-# 3. Configurar variáveis de ambiente
-cp .env.local.example .env.local
-
-# 4. Iniciar servidor de desenvolvimento
+# 3. Iniciar servidor de desenvolvimento
 npm run dev
 ```
 
@@ -34,14 +31,13 @@ npm run test:e2e:ui
 
 ```bash
 npm run build
-npm run start
 ```
 
 ## Docker
 
 ```bash
 docker build -t devportal-frontend .
-docker run -p 3000:3000 devportal-frontend
+docker run -p 80:80 devportal-frontend
 ```
 
 ## Pré-requisitos

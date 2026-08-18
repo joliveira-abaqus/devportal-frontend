@@ -16,7 +16,7 @@
 - [ ] Lint passa sem erros (`npm run lint`)
 - [ ] Build compila com sucesso (`npm run build`)
 - [ ] Testes E2E relevantes adicionados/atualizados
-- [ ] Variáveis de ambiente documentadas no `.env.local.example`
+- [ ] Variáveis de ambiente documentadas
 
 ## Screenshots / Vídeos
 
@@ -27,6 +27,5 @@
 <!-- Passos para testar as mudanças localmente -->
 
 1. `npm install`
-2. `cp .env.local.example .env.local`
-3. `npm run dev`
-4. Acessar http://localhost:3000
+2. `npm run dev`
+3. Acessar http://localhost:3000

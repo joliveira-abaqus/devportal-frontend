@@ -5,7 +5,6 @@ const TEST_PASSWORD = process.env.TEST_USER_PASSWORD || 'DevPortal123!';
 
 test.describe('Solicitações', () => {
   test.beforeEach(async ({ page }) => {
-    // Login antes de cada teste
     await page.goto('/login');
     await page.getByLabel('Email').fill(TEST_EMAIL);
     await page.getByLabel('Senha').fill(TEST_PASSWORD);
@@ -48,7 +47,6 @@ test.describe('Solicitações', () => {
 
     await page.getByRole('button', { name: 'Criar Solicitação' }).click();
 
-    // Deve redirecionar para o detalhe da solicitação
     await expect(page).toHaveURL(/\/requests\/[a-zA-Z0-9-]+/);
     await expect(page.getByText('Corrigir bug no login')).toBeVisible();
   });
