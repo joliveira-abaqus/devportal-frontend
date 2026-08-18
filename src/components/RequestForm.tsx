@@ -1,14 +1,12 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
 import apiClient from '@/lib/api-client';
-import { useState } from 'react';
 
 const requestSchema = z.object({
   title: z.string().min(3, 'Título deve ter pelo menos 3 caracteres'),
@@ -19,7 +17,7 @@ const requestSchema = z.object({
 type RequestFormData = z.infer<typeof requestSchema>;
 
 export default function RequestForm() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -46,7 +44,7 @@ export default function RequestForm() {
       });
 
       const created = response.data.data ?? response.data;
-      router.push(`/requests/${created.id}`);
+      navigate(`/requests/${created.id}`);
     } catch {
       setSubmitError('Erro ao criar solicitação. Tente novamente.');
     } finally {
@@ -99,7 +97,7 @@ export default function RequestForm() {
       />
 
       <div className="flex justify-end gap-3">
-        <Button type="button" variant="outline" onClick={() => router.back()}>
+        <Button type="button" variant="outline" onClick={() => navigate(-1)}>
           Cancelar
         </Button>
         <Button type="submit" isLoading={isSubmitting}>

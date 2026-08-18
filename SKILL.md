@@ -13,7 +13,7 @@ npm install
 # 3. Configurar variáveis de ambiente
 cp .env.local.example .env.local
 
-# 4. Iniciar servidor de desenvolvimento
+# 4. Iniciar servidor de desenvolvimento (Vite na porta 5173)
 npm run dev
 ```
 
@@ -34,14 +34,14 @@ npm run test:e2e:ui
 
 ```bash
 npm run build
-npm run start
+npm run start          # Preview Vite na porta 4173 por padrão
 ```
 
 ## Docker
 
 ```bash
 docker build -t devportal-frontend .
-docker run -p 3000:3000 devportal-frontend
+docker run -p 5173:5173 devportal-frontend
 ```
 
 ## Pré-requisitos

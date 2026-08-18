@@ -1,9 +1,7 @@
-'use client';
-
 import Card from '@/components/ui/Card';
+import Header from '@/components/Header';
 import RequestForm from '@/components/RequestForm';
 import Sidebar from '@/components/Sidebar';
-import Header from '@/components/Header';
 
 export default function NewRequestPage() {
   return (

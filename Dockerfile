@@ -1,44 +1,20 @@
-FROM node:20-alpine AS base
-
-# Instalar dependências apenas quando necessário
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+FROM node:20-alpine AS deps
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
 RUN npm ci
 
-# Rebuild do código fonte apenas quando necessário
-FROM base AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV NEXT_TELEMETRY_DISABLED=1
-
 RUN npm run build
 
-# Imagem de produção
-FROM base AS runner
-WORKDIR /app
+FROM nginx:1.27-alpine AS runner
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+EXPOSE 5173
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-
-# Configuração do standalone output
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 3000
-
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-CMD ["node", "server.js"]
+CMD ["nginx", "-g", "daemon off;"]

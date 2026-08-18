@@ -1,12 +1,9 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { FileText } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { FileText } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import apiClient from '@/lib/api-client';
@@ -26,7 +23,7 @@ const registerSchema = z
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -48,8 +45,7 @@ export default function RegisterPage() {
         email: data.email,
         password: data.password,
       });
-
-      router.push('/login?registered=true');
+      navigate('/login?registered=true');
     } catch {
       setError('Erro ao criar conta. Tente novamente.');
     } finally {
@@ -74,13 +70,7 @@ export default function RegisterPage() {
               </div>
             )}
 
-            <Input
-              id="name"
-              label="Nome"
-              placeholder="Seu nome"
-              error={errors.name?.message}
-              {...register('name')}
-            />
+            <Input id="name" label="Nome" placeholder="Seu nome" error={errors.name?.message} {...register('name')} />
 
             <Input
               id="email"
@@ -119,7 +109,7 @@ export default function RegisterPage() {
 
           <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
             Já tem conta?{' '}
-            <Link href="/login" className="font-medium text-brand-600 hover:text-brand-500">
+            <Link to="/login" className="font-medium text-brand-600 hover:text-brand-500">
               Faça login
             </Link>
           </p>

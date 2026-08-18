@@ -1,11 +1,10 @@
-'use client';
-
 import { useState } from 'react';
-import Link from 'next/link';
 import { PlusCircle, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 import Select from '@/components/ui/Select';
 import RequestCard from '@/components/RequestCard';
+import DashboardLoading from '@/pages/DashboardLoading';
 import { useRequests } from '@/hooks/useRequests';
 import type { RequestStatus, RequestType } from '@/types';
 
@@ -27,7 +26,7 @@ export default function DashboardPage() {
             Gerencie suas solicitações de desenvolvimento
           </p>
         </div>
-        <Link href="/requests/new">
+        <Link to="/requests/new">
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" />
             Nova Solicitação
@@ -66,11 +65,7 @@ export default function DashboardPage() {
       </div>
 
       {isLoading ? (
-        <div className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-24 animate-pulse rounded-lg bg-white shadow-sm dark:bg-gray-800" />
-          ))}
-        </div>
+        <DashboardLoading />
       ) : error ? (
         <div className="rounded-lg bg-red-50 p-6 text-center dark:bg-red-900/30">
           <p className="text-red-700 dark:text-red-400">{error}</p>
@@ -78,7 +73,7 @@ export default function DashboardPage() {
       ) : requests.length === 0 ? (
         <div className="rounded-lg bg-white p-12 text-center shadow-sm dark:bg-gray-800">
           <p className="text-gray-500 dark:text-gray-400">Nenhuma solicitação encontrada.</p>
-          <Link href="/requests/new" className="mt-4 inline-block">
+          <Link to="/requests/new" className="mt-4 inline-block">
             <Button variant="outline">
               <PlusCircle className="mr-2 h-4 w-4" />
               Criar primeira solicitação

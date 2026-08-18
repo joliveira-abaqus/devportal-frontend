@@ -6,7 +6,7 @@ description: How to bring up the full DevPortal stack (infra + api + frontend) l
 # Testing DevPortal end-to-end
 
 DevPortal is split across three repos that must all run together:
-`devportal-infra` (Docker services), `devportal-api` (:3001), `devportal-frontend` (:3000).
+`devportal-infra` (Docker services), `devportal-api` (:3001), `devportal-frontend` (:5173).
 
 ## Bring-up order
 
@@ -26,19 +26,24 @@ npm run dev            # :3001, verify with: curl -s -o /dev/null -w '%{http_cod
 cd ~/repos/devportal-frontend
 cp -n .env.local.example .env.local
 npm install
-npm run dev            # :3000
+npm run dev            # :5173
 ```
 
 Test credentials: `dev@devportal.local` / `DevPortal123!` (also in `.env.local` as
 `TEST_USER_EMAIL` / `TEST_USER_PASSWORD`).
 
+## Proteção de rotas
+
+- A proteção fica em `src/components/ProtectedRoute.tsx` e cobre `/dashboard/*` e
+  `/requests/*`.
+- Usuários sem sessão são enviados a `/login?callbackUrl=...`; após o login, retornam
+  à rota original.
+
 ## Gotchas
 
-- **Do not run `npm run build` in devportal-frontend while `npm run dev` is running.**
-  The build overwrites `.next/`, and the live dev server then serves
-  `TypeError: __webpack_modules__[moduleId] is not a function` 500s on every page.
-  If this happens: kill the dev server, `rm -rf .next`, restart `npm run dev`.
-  Run build checks *before* starting the dev server, or in a separate copy of the repo.
+- O Vite usa fallback de SPA para as rotas do React Router. Ao servir o build em
+  produção, mantenha a configuração do servidor apontando rotas desconhecidas para
+  `index.html`.
 - Backgrounding `npm run dev` with `(cmd &)` inside a subshell can get the process reaped;
   prefer `nohup npm run dev > /tmp/fe.log 2>&1 &` and poll the port until it answers.
 - `~/repos/devportal-infra/scripts/seed-db.sh` is idempotent and can be run either before
@@ -46,11 +51,8 @@ Test credentials: `dev@devportal.local` / `DevPortal123!` (also in `.env.local` 
   `NOTICE: relation ... already exists, skipping` and just upserts the test user.
   Use `PGDATABASE=<name>` to point it at a scratch database when you want to see it
   create the schema from scratch.
-- Route protection lives in `src/middleware.ts` (matcher `/dashboard/*`, `/requests/*`);
-  unauthenticated hits redirect to `/login?callbackUrl=<path>`.
-- `/login` reads `callbackUrl` via `useSearchParams`, so the page body must stay wrapped in
-  `<Suspense>` or `npm run build` fails prerendering `/login`. External callbackUrls
-  (anything not starting with a single `/`) are intentionally coerced to `/dashboard`.
+- `/login` lê `callbackUrl` via `useSearchParams`. URLs externas (qualquer coisa que
+  não comece com uma única `/`) são convertidas intencionalmente para `/dashboard`.
 
 ## Known pre-existing issues (not regressions — do not chase)
 

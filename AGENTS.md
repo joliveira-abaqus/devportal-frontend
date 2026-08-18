@@ -1,14 +1,14 @@
 # AGENTS.md - DevPortal Frontend
 
 ## Visão Geral
-Aplicação frontend do DevPortal construída com Next.js 14 (App Router), TypeScript e Tailwind CSS.
+Aplicação frontend do DevPortal construída com Vite, React Router, TypeScript e Tailwind CSS.
 Comunica-se com o `devportal-api` (porta 3001) via cookies httpOnly para autenticação JWT.
 
 ## Stack Técnico
-- **Framework:** Next.js 14 (App Router)
+- **Framework:** Vite + React Router
 - **Linguagem:** TypeScript
 - **Estilização:** Tailwind CSS + @tailwindcss/forms
-- **Autenticação:** NextAuth.js (CredentialsProvider)
+- **Autenticação:** Contexto React com cookie httpOnly do `devportal-api`
 - **HTTP Client:** Axios (withCredentials)
 - **Formulários:** react-hook-form + zod
 - **Ícones:** lucide-react
@@ -17,17 +17,19 @@ Comunica-se com o `devportal-api` (porta 3001) via cookies httpOnly para autenti
 ## Estrutura do Projeto
 ```
 src/
-├── app/           # Páginas e rotas (App Router)
+├── pages/         # Páginas e layouts das rotas
+├── contexts/      # Contextos de autenticação e tema
+├── routes.tsx     # Configuração do React Router
 ├── components/    # Componentes React (ui/ para base)
 ├── lib/           # Utilidades e configurações
 ├── hooks/         # Custom hooks
 ├── types/         # TypeScript types
-└── middleware.ts   # Proteção de rotas
+└── components/ProtectedRoute.tsx # Proteção de rotas
 ```
 
 ## Comandos Essenciais
 ```bash
-npm run dev        # Servidor de desenvolvimento (porta 3000)
+npm run dev        # Servidor de desenvolvimento (porta 5173)
 npm run build      # Build de produção
 npm run lint       # Verificação de lint
 npm run test:e2e   # Testes E2E com Playwright
@@ -35,10 +37,7 @@ npm run test:e2e   # Testes E2E com Playwright
 
 ## Variáveis de Ambiente
 Copie `.env.local.example` para `.env.local` e configure:
-- `NEXT_PUBLIC_API_URL` - URL do backend (padrão: http://localhost:3001)
-- `NEXTAUTH_SECRET` - Secret do NextAuth
-- `NEXTAUTH_URL` - URL da aplicação (padrão: http://localhost:3000)
-- `BACKEND_URL` - URL do backend para chamadas server-side
+- `VITE_API_URL` - URL do backend (padrão: http://localhost:3001)
 
 ## Convenções
 - Idioma dos comentários e commits: Português (BR)

@@ -1,8 +1,5 @@
-'use client';
-
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { LayoutDashboard, PlusCircle, FileText, Settings } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import ThemeToggle from '@/components/ThemeToggle';
 
@@ -12,12 +9,12 @@ const navigation = [
 ];
 
 export default function Sidebar() {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
 
   return (
     <aside className="flex h-full w-64 flex-col border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
       <div className="flex h-16 items-center border-b border-gray-200 px-6 dark:border-gray-700">
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link to="/dashboard" className="flex items-center gap-2">
           <FileText className="h-6 w-6 text-brand-600" />
           <span className="text-lg font-bold text-gray-900 dark:text-gray-100">DevPortal</span>
         </Link>
@@ -29,7 +26,7 @@ export default function Sidebar() {
           return (
             <Link
               key={item.name}
-              href={item.href}
+              to={item.href}
               className={cn(
                 'group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
                 isActive
@@ -54,7 +51,7 @@ export default function Sidebar() {
       <div className="border-t border-gray-200 p-3 space-y-1 dark:border-gray-700">
         <ThemeToggle />
         <Link
-          href="#"
+          to="#"
           className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
         >
           <Settings className="h-5 w-5 text-gray-400" />

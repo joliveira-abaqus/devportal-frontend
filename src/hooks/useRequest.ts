@@ -1,5 +1,3 @@
-'use client';
-
 import { useCallback, useEffect, useState } from 'react';
 import apiClient from '@/lib/api-client';
 import type { Request } from '@/types';

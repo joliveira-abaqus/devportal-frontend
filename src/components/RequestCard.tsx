@@ -1,7 +1,5 @@
-'use client';
-
-import Link from 'next/link';
 import { Calendar, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Card from '@/components/ui/Card';
 import StatusBadge from '@/components/StatusBadge';
 import type { Request } from '@/types';
@@ -13,7 +11,7 @@ interface RequestCardProps {
 
 export default function RequestCard({ request }: RequestCardProps) {
   return (
-    <Link href={`/requests/${request.id}`}>
+    <Link to={`/requests/${request.id}`}>
       <Card className="transition-shadow hover:shadow-md">
         <div className="flex items-start justify-between">
           <div className="flex-1">
